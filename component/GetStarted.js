@@ -2,19 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Modal, ActivityIndicator } from 'react-native';
 import MoodPopup from './MoodPopUp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAuth } from 'firebase/auth';
 
 export default function GetStarted({ navigation }) {
   const [showMoodPopup, setShowMoodPopup] = useState(false);
   const [moodData, setMoodData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const auth = getAuth();
+  const userId = auth.currentUser?.uid;
 
   useEffect(() => {
     setLoading(false);
   }, []);
 
   const handleGetStartedPress = async () => {
+    if (!userId) {
+      alert('User ID is missing');
+      return;
+    }
+
     const today = new Date().toISOString().split('T')[0];
-    const lastShownDate = await AsyncStorage.getItem('lastMoodPopupDate');
+    const lastShownDateKey = `lastMoodPopupDate_${userId}`;
+    const lastShownDate = await AsyncStorage.getItem(lastShownDateKey);
 
     if (lastShownDate !== today) {
       setShowMoodPopup(true);
@@ -26,7 +35,8 @@ export default function GetStarted({ navigation }) {
   const handleMoodSubmit = async (data) => {
     setMoodData(data);
     setShowMoodPopup(false);
-    await AsyncStorage.setItem('lastMoodPopupDate', new Date().toISOString().split('T')[0]);
+    const lastShownDateKey = `lastMoodPopupDate_${userId}`;
+    await AsyncStorage.setItem(lastShownDateKey, new Date().toISOString().split('T')[0]);
     navigation.navigate('HomeTabs', { moodData: data });
   };
 
@@ -60,7 +70,7 @@ export default function GetStarted({ navigation }) {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <MoodPopup onSubmit={handleMoodSubmit} />
+            <MoodPopup onSubmit={handleMoodSubmit} userId={userId} />
           </View>
         </View>
       </Modal>

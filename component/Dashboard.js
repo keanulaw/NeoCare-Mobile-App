@@ -35,7 +35,10 @@ export default function Dashboard({ navigation }) {
 
       {/* Quick Access Buttons */}
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.circleButton}>
+        <TouchableOpacity 
+          style={styles.circleButton}
+          onPress={() => navigation.navigate('ConsultantScreen')} // Navigate to ConsultantScreen
+        >
           <Image source={require('../assets/consultants-icon.png')} style={styles.buttonIcon} />
           <Text style={styles.buttonText}>Consultants</Text>
         </TouchableOpacity>

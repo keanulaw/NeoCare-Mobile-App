@@ -15,6 +15,8 @@ import RegisterScreen from './component/RegisterScreen'; // Import the RegisterS
 import LoginScreen from './component/LoginScreen'; // Import the LoginScreen
 import MoodDetail from './component/MoodDetail'; // Import MoodDetail
 import BirthingCenterLocator from './component/BirthingCenterLocator'; // Import the component
+import ConsultantScreen from './component/ConsultantScreen'; // Import ConsultantScreen
+import ConsultantDetailScreen from './component/ConsultantDetailScreen'; // Import the new screen
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -79,6 +81,10 @@ export default function App() {
         <Stack.Screen name="MoodDetail" component={MoodDetail} />
         {/* Birthing Center Locator Screen */}
         <Stack.Screen name="BirthingCenterLocator" component={BirthingCenterLocator} />
+        {/* Consultant Screen */}
+        <Stack.Screen name="ConsultantScreen" component={ConsultantScreen} />
+        {/* Consultant Detail Screen */}
+        <Stack.Screen name="ConsultantDetail" component={ConsultantDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
